@@ -1,0 +1,82 @@
+@font-face {
+    font-family: 'MeteoconsRegular';
+    src: url('meteocons-webfont.eot');
+    src: url('meteocons-webfont.eot?#iefix') format('embedded-opentype'),
+         url('meteocons-webfont.woff') format('woff'),
+         url('meteocons-webfont.ttf') format('truetype'),
+         url('meteocons-webfont.svg#MeteoconsRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+body{
+	color: white;
+	background-color: black;
+	font-size: 110%;
+	font-family: sans-serif;
+	padding: 0;
+	margin: 0;
+}
+#track, #map { width: 100%; height: 100%; padding: 0; }
+
+#geolocation{
+	font-weight: 700;
+	font-size:110%;
+	
+}
+#current_heading{
+	font-weight: 700;
+	font-size:110%;
+}
+.center{text-align: center;}
+.title-heading{
+	font-size: 140%;
+	margin: 2%;
+	line-height: 1.3;
+}
+hr{
+	width:100%;
+	color:ghostwhite;
+	opacity: 0.15;
+}
+
+.icon:before {
+	font-family: 'MeteoconsRegular';
+	content: attr(data-icon);
+	margin-right: 6px;
+}
+.ui-header{
+	background: linear-gradient(to left, #35306d , #844579); 
+	border-bottom: 1px solid ghostwhite;
+}
+.ui-footer{
+	background: #444; 
+	border-top: 1px solid ghostwhite;
+}
+.ui-content{
+    background: transparent;
+}
+.ui-btn-active a{
+	background:#844579; 
+}
+
+.ui-bg{
+background: #35306d; /* fallback for old browsers */
+background: -webkit-linear-gradient(to bottom, #35306d , #844579 70%); /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to bottom, #35306d , #844579 70%); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#current_temp{
+	font-size: 400%;
+	font-weight: bold;
+	margin:3%;
+}
+#current_wind_speed,#current_temp_roll,#current_visibility,#current_pressure{
+ font-size: 315%;
+	font-weight: bold;
+	margin:3%;	
+}
+#current_summary,#location{
+	margin:2%;
+	font-size: 105%;
+	font-weight: 800;
+}
