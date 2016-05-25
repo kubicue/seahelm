@@ -1,14 +1,8 @@
-# A Blank PhoneGap App
+# Seaheld app
 
-## Usage
+## PhoneGap Weather & Geolocation app
+### About
+Seaheld is an application for small craft and unmotorized boaters. It allows them to have essential navigation and weather tools. 
 
-### PhoneGap CLI
-
-    $ phonegap create my-app --template blank
-
-### Desktop
-
-In your browser, open the file:
-
-    /www/index.html
+    
 
