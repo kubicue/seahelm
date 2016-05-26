@@ -33,9 +33,17 @@
     <content src="index.html" />
 		<icon src="icon.png" />
     <access origin="*" />
-    <allow-navigation href="http://*/*" />
-    <allow-navigation href="https://*/*" />
-    <allow-navigation href="data:*" />
+<gap:plugin name="cordova-plugin-whitelist" version="1" />
+<allow-intent href="http://*/*" />
+<allow-intent href="https://*/*" />
+<allow-navigation href="data:*" />		
+<allow-intent href="tel:*" />
+<allow-intent href="sms:*" />
+<allow-intent href="mailto:*" />
+<allow-intent href="geo:*" />
+<platform name="android">
+    <allow-intent href="market:*" />
+</platform>
 	<feature name="http://api.phonegap.com/1.0/geolocation"/> 
 	<gap:plugin name="org.apache.cordova.geolocation"/>
 </widget>

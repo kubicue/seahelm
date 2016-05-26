@@ -12,9 +12,14 @@
     <content src="index.html" />
     <icon src="icon.png" />
     <access origin="*" />
-    <allow-navigation href="http://*/*" />
-    <allow-navigation href="https://*/*" />
+    <gap:plugin name="cordova-plugin-whitelist" version="1" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
     <allow-navigation href="data:*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
     <gap:plugin name="org.apache.cordova.geolocation" />
     <preference name="orientation" value="portrait" />
     <preference name="target-device" value="universal" />
