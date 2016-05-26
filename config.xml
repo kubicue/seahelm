@@ -24,7 +24,7 @@
 		<preference name="show-splash-screen-spinner" value="true" />
 		<preference name="auto-hide-splash-screen" value="true" />
 		<preference name="disable-cursor" value="true" />
-		<preference name="android-minSdkVersion" value="5" />
+		<preference name="android-minSdkVersion" value="3" />
 		<preference name="android-installLocation" value="auto" />
 		<preference name="splash-screen-duration" value="2000" />
 	  <preference name="SplashScreenDelay" value="1000" />
@@ -33,17 +33,18 @@
     <content src="index.html" />
 		<icon src="icon.png" />
     <access origin="*" />
-<gap:plugin name="cordova-plugin-whitelist" version="1" />
-<allow-intent href="http://*/*" />
-<allow-intent href="https://*/*" />
-<allow-navigation href="data:*" />		
-<allow-intent href="tel:*" />
-<allow-intent href="sms:*" />
-<allow-intent href="mailto:*" />
-<allow-intent href="geo:*" />
-<platform name="android">
-    <allow-intent href="market:*" />
-</platform>
-	<feature name="http://api.phonegap.com/1.0/geolocation"/> 
-	<gap:plugin name="org.apache.cordova.geolocation"/>
-</widget>
+		<access origin="http://maps.google.com/maps/api/js?sensor=false"/>
+    <access origin="https://api.forecast.io/forecast/8b0e1f8b53a5e7e0e6b2a1b2ced3ceda/32.7150,-117.1625"/>
+		<gap:plugin name="cordova-plugin-whitelist" source="npm" spec="1.2.2" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
+    <feature name="http://api.phonegap.com/1.0/geolocation" /> 
+	  <gap:plugin name="org.apache.cordova.geolocation" source="pgb" spec="0.3.12"/>
+  </widget>

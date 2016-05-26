@@ -33,6 +33,8 @@
     <content src="index.html" />
 		<icon src="icon.png" />
     <access origin="*" />
+		<access origin="http://maps.google.com/maps/api/js?sensor=false"/>
+    <access origin="https://api.forecast.io/forecast/8b0e1f8b53a5e7e0e6b2a1b2ced3ceda/32.7150,-117.1625"/>
 		<gap:plugin name="cordova-plugin-whitelist" source="npm" spec="1.2.2" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
