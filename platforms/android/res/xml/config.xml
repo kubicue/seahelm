@@ -1,19 +1,10 @@
-<?xml version='1.0' encoding='utf-8'?>
-<widget id="com.kubicue.seaheld" version="1.0" versionCode="" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <preference name="loglevel" value="DEBUG" />
-    <feature name="Geolocation">
-        <param name="android-package" value="org.apache.cordova.geolocation.Geolocation" />
-    </feature>
-    <feature name="SplashScreen">
-        <param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
-        <param name="onload" value="true" />
-    </feature>
-    <feature name="Whitelist">
-        <param name="android-package" value="org.apache.cordova.whitelist.WhitelistPlugin" />
-        <param name="onload" value="true" />
-    </feature>
-    <allow-intent href="market:*" />
-    <name>Seaheld App</name>
+<?xml version="1.0" encoding="UTF-8"?>
+	<widget xmlns = "http://www.w3.org/ns/widgets"
+		xmlns:gap = "http://phonegap.com/ns/1.0"
+		id        = "com.kubicue.seaheld"
+		versionCode=""
+		version   = "1.0">
+	 <name>Seaheld App</name>
     <description>
         Seaheld is an application for small craft and unmotorized boaters. 
         It allows them to have essential navigation and weather tools. 
@@ -21,33 +12,27 @@
     <author email="support@kubicue.com" href="http://kubicue.com">
         Seaheld Team
     </author>
-    <preference name="phonegap-version" value="" />
-    <preference name="orientation" value="portrait" />
-    <preference name="target-device" value="universal" />
-    <preference name="fullscreen" value="true" />
-    <preference name="webviewbounce" value="true" />
-    <preference name="prerendered-icon" value="true" />
-    <preference name="detect-data-types" value="true" />
-    <preference name="exit-on-suspend" value="true" />
-    <preference name="show-splash-screen-spinner" value="true" />
-    <preference name="auto-hide-splash-screen" value="true" />
-    <preference name="disable-cursor" value="true" />
-    <preference name="android-minSdkVersion" value="5" />
-    <preference name="android-installLocation" value="auto" />
-    <preference name="splash-screen-duration" value="2000" />
-    <preference name="SplashScreenDelay" value="1000" />
-    <preference name="load-url-timeout" value="0" />
-    <preference name="stay-in-webview" value="true" />
+	  <preference name="phonegap-version" value="" />
+		<preference name="orientation" value="portrait" />
+		<preference name="target-device" value="universal" />
+		<preference name="fullscreen" value="true" />
+		<preference name="webviewbounce" value="true" />
+		<preference name="prerendered-icon" value="true" />
+		<preference name="stay-in-webview" value="true" />
+		<preference name="detect-data-types" value="true" />
+		<preference name="exit-on-suspend" value="true" />
+		<preference name="show-splash-screen-spinner" value="true" />
+		<preference name="auto-hide-splash-screen" value="true" />
+		<preference name="disable-cursor" value="true" />
+		<preference name="android-minSdkVersion" value="5" />
+		<preference name="android-installLocation" value="auto" />
+		<preference name="splash-screen-duration" value="2000" />
+	  <preference name="SplashScreenDelay" value="1000" />
+		<preference name="load-url-timeout" value="0" />
+		<preference name="stay-in-webview" value="true" />
     <content src="index.html" />
-    <icon src="icon.png" />
+		<icon src="icon.png" />
     <access origin="*" />
-    <gap:plugin name="cordova-plugin-whitelist" version="1" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-navigation href="data:*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
-    <gap:plugin name="org.apache.cordova.geolocation" />
-</widget>
+    <feature name="http://api.phonegap.com/1.0/geolocation"/> 
+	  <gap:plugin name="org.apache.cordova.geolocation"/>
+  </widget>
