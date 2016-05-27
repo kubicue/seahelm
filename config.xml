@@ -34,7 +34,7 @@
     <content src="index.html" />
 		<icon src="icon.png" />
     <access origin="*" />
-		<access origin="*://*.api.forecast.io/forecast/*" subdomains="true" />
+		<access origin="https://api.forecast.io/forecast/8b0e1f8b53a5e7e0e6b2a1b2ced3ceda/32.7150,-117.1625" />
 		<access origin="*://*.googleapis.com/*" subdomains="true" />
     <access origin="*://*.gstatic.com/*" subdomains="true" />
     <access origin="*://*.google.com/*" subdomains="true" />
