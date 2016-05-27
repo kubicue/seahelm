@@ -13,6 +13,7 @@
         Seaheld Team
     </author>
 	  <preference name="phonegap-version" value="" />
+		<preference name="permissions" value="none"/>
 		<preference name="orientation" value="portrait" />
 		<preference name="target-device" value="universal" />
 		<preference name="fullscreen" value="true" />
@@ -33,7 +34,13 @@
     <content src="index.html" />
 		<icon src="icon.png" />
     <access origin="*" />
-		<gap:plugin name="cordova-plugin-whitelist" source="npm" spec="1.2.2" />
+		<access origin="*://*.api.forecast.io/forecast/*" subdomains="true" />
+		<access origin="*://*.googleapis.com/*" subdomains="true" />
+    <access origin="*://*.gstatic.com/*" subdomains="true" />
+    <access origin="*://*.google.com/*" subdomains="true" />
+    <access origin="*://*.googleusercontent.com/*" subdomains="true" />
+		<allow-navigation href="*" />
+		<gap:plugin name="cordova-plugin-whitelist" spec="1.2.2"  source="npm" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="tel:*" />
@@ -43,6 +50,7 @@
     <platform name="android">
         <allow-intent href="market:*" />
     </platform>
+		<feature name="http://api.phonegap.com/1.0/device" />
     <feature name="http://api.phonegap.com/1.0/geolocation" /> 
-	  <gap:plugin name="org.apache.cordova.geolocation" source="pgb" spec="0.3.12"/>
+	  <gap:plugin name="org.apache.cordova.geolocation" spec="0.3.12" source="pgb" />
   </widget>

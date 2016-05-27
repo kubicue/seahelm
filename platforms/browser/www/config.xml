@@ -12,15 +12,21 @@
     <content src="index.html" />
     <icon src="icon.png" />
     <access origin="*" />
-    <gap:plugin name="cordova-plugin-whitelist" version="1" />
+    <access origin="*://*.api.forecast.io/forecast/*" subdomains="true" />
+    <access origin="*://*.googleapis.com/*" subdomains="true" />
+    <access origin="*://*.gstatic.com/*" subdomains="true" />
+    <access origin="*://*.google.com/*" subdomains="true" />
+    <access origin="*://*.googleusercontent.com/*" subdomains="true" />
+    <allow-navigation href="*" />
+    <gap:plugin name="cordova-plugin-whitelist" source="npm" spec="1.2.2" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
-    <allow-navigation href="data:*" />
     <allow-intent href="tel:*" />
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <gap:plugin name="org.apache.cordova.geolocation" />
+    <gap:plugin name="org.apache.cordova.geolocation" source="pgb" spec="0.3.12" />
+    <preference name="permissions" value="none" />
     <preference name="orientation" value="portrait" />
     <preference name="target-device" value="universal" />
     <preference name="fullscreen" value="true" />
@@ -31,7 +37,7 @@
     <preference name="show-splash-screen-spinner" value="true" />
     <preference name="auto-hide-splash-screen" value="true" />
     <preference name="disable-cursor" value="true" />
-    <preference name="android-minSdkVersion" value="5" />
+    <preference name="android-minSdkVersion" value="3" />
     <preference name="android-installLocation" value="auto" />
     <preference name="splash-screen-duration" value="2000" />
     <preference name="SplashScreenDelay" value="1000" />
