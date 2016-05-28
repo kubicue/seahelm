@@ -1,6 +1,10 @@
-<?xml version='1.0' encoding='utf-8'?>
-<widget id="com.kubicue.seaheld" version="1.0" versionCode="" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>Seaheld App</name>
+<?xml version="1.0" encoding="UTF-8"?>
+	<widget xmlns = "http://www.w3.org/ns/widgets"
+		xmlns:gap = "http://phonegap.com/ns/1.0"
+		id        = "com.kubicue.seaheld"
+		versionCode=""
+		version   = "1.0">
+	 <name>Seaheld App</name>
     <description>
         Seaheld is an application for small craft and unmotorized boaters. 
         It allows them to have essential navigation and weather tools. 
@@ -8,26 +12,40 @@
     <author email="support@kubicue.com" href="http://kubicue.com">
         Seaheld Team
     </author>
+	  <preference name="phonegap-version" value="6.2.4" />
+		<preference name="orientation" value="portrait" />
+		<preference name="target-device" value="universal" />
+		<preference name="fullscreen" value="true" />
+		<preference name="webviewbounce" value="true" />
+		<preference name="prerendered-icon" value="true" />
+		<preference name="stay-in-webview" value="true" />
+		<preference name="ios-statusbarstyle" value="default" />
+		<preference name="detect-data-types" value="true" />
+		<preference name="exit-on-suspend" value="true" />
+		<preference name="show-splash-screen-spinner" value="true" />
+		<preference name="auto-hide-splash-screen" value="true" />
+		<preference name="disable-cursor" value="true" />
+		<preference name="android-minSdkVersion" value="7" />
+		<preference name="android-installLocation" value="auto" />
+		<preference name="splash-screen-duration" value="0" />
+		<preference name="load-url-timeout" value="0" />
     <content src="index.html" />
-    <icon src="icon.png" />
+		<icon src="icon.png" />
+		<gap:plugin name="cordova-plugin-whitelist" spec="1.2.2"  source="npm" />
     <access origin="*" />
-    <gap:plugin name="cordova-plugin-whitelist" source="npm" spec="1.2.2" />
-    <gap:plugin name="org.apache.cordova.geolocation" source="pgb" spec="0.3.12" />
-    <preference name="phonegap-version" value="3.1.0" />
-    <preference name="orientation" value="portrait" />
-    <preference name="target-device" value="universal" />
-    <preference name="fullscreen" value="true" />
-    <preference name="webviewbounce" value="true" />
-    <preference name="prerendered-icon" value="true" />
-    <preference name="stay-in-webview" value="true" />
-    <preference name="ios-statusbarstyle" value="default" />
-    <preference name="detect-data-types" value="true" />
-    <preference name="exit-on-suspend" value="true" />
-    <preference name="show-splash-screen-spinner" value="true" />
-    <preference name="auto-hide-splash-screen" value="true" />
-    <preference name="disable-cursor" value="true" />
-    <preference name="android-minSdkVersion" value="7" />
-    <preference name="android-installLocation" value="auto" />
-    <preference name="splash-screen-duration" value="0" />
-    <preference name="load-url-timeout" value="0" />
-</widget>
+		 <allow-navigation href="*" />
+		 <access origin="https://api.forecast.io" subdomains="true" />
+		 <access origin="http://maps.google.com" subdomains="true" /> 
+		 <allow-intent href="http://*/*" />
+     <allow-intent href="https://*/*" />
+     <allow-intent href="tel:*" />
+     <allow-intent href="sms:*" />
+     <allow-intent href="mailto:*" />
+     <allow-intent href="geo:*" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+    </platform>
+		<feature name="http://api.phonegap.com/1.0/device" />
+    <feature name="http://api.phonegap.com/1.0/geolocation" /> 
+	  <gap:plugin name="org.apache.cordova.geolocation" spec="0.3.12" source="pgb" />
+  </widget>

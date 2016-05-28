@@ -12,7 +12,7 @@
     <author email="support@kubicue.com" href="http://kubicue.com">
         Seaheld Team
     </author>
-	  <preference name="phonegap-version" value="3.1.0" />
+	  <preference name="phonegap-version" value="6.2.4" />
 		<preference name="orientation" value="portrait" />
 		<preference name="target-device" value="universal" />
 		<preference name="fullscreen" value="true" />
