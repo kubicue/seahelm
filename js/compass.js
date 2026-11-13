@@ -156,3 +156,4 @@ export class CompassManager {
     return directions[idx];
   }
 }
+

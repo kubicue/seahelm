@@ -134,3 +134,4 @@ export const Storage = {
     URL.revokeObjectURL(url);
   }
 };
+

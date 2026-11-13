@@ -456,3 +456,4 @@ export class NauticalChart {
     this.ctx.restore();
   }
 }
+

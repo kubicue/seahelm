@@ -80,3 +80,4 @@ Open `http://localhost:8080` in your mobile or desktop browser.
 ## 📄 License
 
 MIT License — free for mariners, paddlers, and developers.
+
