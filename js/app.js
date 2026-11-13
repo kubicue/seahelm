@@ -8,6 +8,8 @@ import { CompassManager } from './compass.js';
 import { NauticalChart } from './chart.js';
 import { WeatherManager } from './weather.js';
 import { SafetyManager } from './safety.js';
+import { VhfRadioManager } from './vhf.js';
+import { DistressManager } from './distress.js';
 
 class SeahelmApp {
   constructor() {
@@ -22,10 +24,17 @@ class SeahelmApp {
     });
     this.weather = new WeatherManager();
     this.safety = new SafetyManager();
+    this.vhf = new VhfRadioManager({
+      onStateChange: (state) => this.onVhfStateChange(state)
+    });
     this.chart = null;
 
     this.currentCity = 'san diego';
     this.activeWaypointId = null;
+
+    // Distress state
+    this.currentDistressType = 'MAYDAY';
+    this.isSpeakingDistress = false;
 
     this.dom = {};
   }
@@ -125,6 +134,31 @@ class SeahelmApp {
       btnSetAnchor: document.getElementById('btn-set-anchor'),
       btnClearAnchor: document.getElementById('btn-clear-anchor'),
       anchorStatus: document.getElementById('anchor-status-text'),
+
+      // VHF Radio UI
+      vhfChNum: document.getElementById('vhf-ch-num'),
+      vhfChFreq: document.getElementById('vhf-ch-freq'),
+      vhfChName: document.getElementById('vhf-ch-name'),
+      vhfChDesc: document.getElementById('vhf-ch-desc'),
+      vhfStatusPill: document.getElementById('vhf-status-pill'),
+      btnVhfListen: document.getElementById('btn-vhf-listen'),
+      btnVhfListenText: document.getElementById('btn-vhf-listen-text'),
+      btnVhfSquelch: document.getElementById('btn-vhf-squelch'),
+      vhfVolSlider: document.getElementById('vhf-volume-slider'),
+      vhfChBtns: document.querySelectorAll('.vhf-ch-btn'),
+
+      // Distress & Mayday/Pan-Pan UI
+      btnHeaderDistress: document.getElementById('btn-header-distress'),
+      btnTriggerMayday: document.getElementById('btn-trigger-mayday'),
+      btnTriggerPanPan: document.getElementById('btn-trigger-panpan'),
+      distressDialog: document.getElementById('distress-dialog'),
+      teleprompterTitle: document.getElementById('teleprompter-title'),
+      distressNatureSelect: document.getElementById('distress-nature-select'),
+      teleprompterScript: document.getElementById('teleprompter-script'),
+      btnDistressSpeak: document.getElementById('btn-distress-speak'),
+      btnDistressSpeakLabel: document.getElementById('btn-distress-speak-label'),
+      btnDistressDispatch: document.getElementById('btn-distress-dispatch'),
+      btnDistressClose: document.getElementById('btn-distress-close'),
 
       // Waypoint Dialog
       wpDialog: document.getElementById('waypoint-dialog'),
@@ -289,6 +323,61 @@ class SeahelmApp {
       this.dom.btnClearAnchor.style.display = 'none';
       this.showToast('Anchor retrieved');
     });
+
+    // VHF Radio Controls
+    this.dom.vhfChBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.dom.vhfChBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const chId = btn.getAttribute('data-channel');
+        this.vhf.selectChannel(chId);
+      });
+    });
+
+    this.dom.btnVhfListen?.addEventListener('click', () => {
+      this.vhf.togglePlay();
+    });
+
+    this.dom.btnVhfSquelch?.addEventListener('click', () => {
+      this.vhf.playSquelchBurst(180);
+      this.showToast('Squelch Burst Test (Web Audio)');
+    });
+
+    this.dom.vhfVolSlider?.addEventListener('input', (e) => {
+      this.vhf.setVolume(parseFloat(e.target.value));
+    });
+
+    // Distress (MAYDAY & PAN-PAN) Assistant
+    this.dom.btnHeaderDistress?.addEventListener('click', () => {
+      this.openDistressModal('MAYDAY');
+    });
+    this.dom.btnTriggerMayday?.addEventListener('click', () => {
+      this.openDistressModal('MAYDAY');
+    });
+    this.dom.btnTriggerPanPan?.addEventListener('click', () => {
+      this.openDistressModal('PAN-PAN');
+    });
+
+    this.dom.distressNatureSelect?.addEventListener('change', () => {
+      this.updateDistressScript();
+    });
+
+    this.dom.btnDistressSpeak?.addEventListener('click', () => {
+      this.handleDistressSpeak();
+    });
+
+    this.dom.btnDistressDispatch?.addEventListener('click', () => {
+      this.handleDistressDispatch();
+    });
+
+    this.dom.btnDistressClose?.addEventListener('click', () => {
+      DistressManager.stopSpeaking();
+      this.isSpeakingDistress = false;
+      if (this.dom.btnDistressSpeakLabel) {
+        this.dom.btnDistressSpeakLabel.textContent = 'Speak Broadcast (Audio)';
+      }
+      this.dom.distressDialog?.close();
+    });
   }
 
   applySettings() {
@@ -426,6 +515,11 @@ class SeahelmApp {
           : `Anchor OK: ${check.driftMeters}m from anchor`;
       }
     }
+
+    // Live update distress teleprompter if open
+    if (this.dom.distressDialog && this.dom.distressDialog.open) {
+      this.updateDistressScript();
+    }
   }
 
   onGeoError(err) {
@@ -550,6 +644,99 @@ class SeahelmApp {
 
       this.dom.waypointsContainer.appendChild(div);
     });
+  }
+
+  // --- VHF Radio Methods ---
+
+  onVhfStateChange(state) {
+    const ch = state.channel;
+    if (this.dom.vhfChNum) this.dom.vhfChNum.textContent = ch.id;
+    if (this.dom.vhfChFreq) this.dom.vhfChFreq.textContent = ch.freq;
+    if (this.dom.vhfChName) this.dom.vhfChName.textContent = ch.name;
+    if (this.dom.vhfChDesc) this.dom.vhfChDesc.textContent = ch.desc;
+
+    if (this.dom.vhfStatusPill) {
+      if (state.isPlaying) {
+        this.dom.vhfStatusPill.className = 'vhf-status-badge receiving';
+        this.dom.vhfStatusPill.textContent = state.isSimulated ? 'Squelch Open' : 'Receiving Live';
+      } else {
+        this.dom.vhfStatusPill.className = 'vhf-status-badge';
+        this.dom.vhfStatusPill.textContent = 'Standby';
+      }
+    }
+
+    if (this.dom.btnVhfListenText) {
+      this.dom.btnVhfListenText.textContent = state.isPlaying ? 'Mute / Stop' : 'Listen Stream / Monitor';
+    }
+  }
+
+  // --- Maritime Distress (MAYDAY / PAN-PAN) Methods ---
+
+  openDistressModal(type = 'MAYDAY') {
+    this.currentDistressType = type;
+    if (this.dom.teleprompterTitle) {
+      this.dom.teleprompterTitle.textContent = `${type} DISTRESS ASSISTANT`;
+      this.dom.teleprompterTitle.style.color = type === 'MAYDAY' ? '#ef4444' : '#f59e0b';
+    }
+    this.updateDistressScript();
+    this.dom.distressDialog?.showModal();
+  }
+
+  updateDistressScript() {
+    const natureId = this.dom.distressNatureSelect?.value || 'capsized';
+    const natureObj = DistressManager.NATURE_TYPES.find(n => n.id === natureId);
+    const natureText = natureObj ? natureObj.defaultDesc : 'Craft in distress requiring immediate assistance.';
+
+    const profile = {
+      ...(this.settings.vesselProfile || {}),
+      natureText
+    };
+
+    const scriptData = DistressManager.generateScript(
+      this.currentDistressType,
+      profile,
+      this.geo.currentPosition
+    );
+
+    this.currentScriptData = scriptData;
+
+    if (this.dom.teleprompterScript) {
+      // Highlight call words and coordinates
+      let formattedHtml = scriptData.fullScript
+        .replace(/(MAYDAY|PAN-PAN)/g, '<span class="script-highlight">$1</span>')
+        .replace(/OVER\./g, '<strong style="color: #38bdf8;">OVER.</strong>');
+      this.dom.teleprompterScript.innerHTML = formattedHtml;
+    }
+  }
+
+  handleDistressSpeak() {
+    if (this.isSpeakingDistress) {
+      DistressManager.stopSpeaking();
+      this.isSpeakingDistress = false;
+      if (this.dom.btnDistressSpeakLabel) {
+        this.dom.btnDistressSpeakLabel.textContent = 'Speak Broadcast (Audio)';
+      }
+      return;
+    }
+
+    if (!this.currentScriptData) this.updateDistressScript();
+
+    this.isSpeakingDistress = true;
+    if (this.dom.btnDistressSpeakLabel) {
+      this.dom.btnDistressSpeakLabel.textContent = 'Speaking... (Tap to Stop)';
+    }
+
+    DistressManager.speakBroadcast(this.currentScriptData.fullScript, () => {
+      this.isSpeakingDistress = false;
+      if (this.dom.btnDistressSpeakLabel) {
+        this.dom.btnDistressSpeakLabel.textContent = 'Speak Broadcast (Audio)';
+      }
+    });
+  }
+
+  async handleDistressDispatch() {
+    if (!this.currentScriptData) this.updateDistressScript();
+    await DistressManager.dispatchDistressMessage(this.currentScriptData.emergencySmsText);
   }
 
   showToast(msg) {

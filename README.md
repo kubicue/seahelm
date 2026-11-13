@@ -14,6 +14,8 @@ Recreated in 2026 using **100% Primitive Web Standard APIs** — zero external f
 | **Live Compass & Inclinometer** | `DeviceOrientationEvent` & `DeviceMotionEvent` | Real-time magnetic compass rose heading and hull **heel (roll)** and **trim (pitch)** angles for craft balance. |
 | **Nautical Chart Plotter** | HTML5 `<canvas>` API | Marine vector chart with distance range rings (0.25 to 2.0 NM), vessel orientation, 5-minute velocity vectors, breadcrumbs, waypoints, and OpenStreetMap/OpenSeaMap caching. |
 | **Marine Weather & Waves** | `fetch()` + Open-Meteo API | Modern replacement for defunct DarkSky/Forecast.io. Live wind speed/gusts/direction, wave height & swell period, barometric pressure, visibility, and Small Craft Advisory warnings. |
+| **VHF Marine Radio Receiver** | HTML5 `<audio>` & Web Audio API | Live streaming marine receiver for **NOAA Marine Weather Radio** (WX1/WX2) and frequency reference guide (Ch 16, 09, 13, 22A) with authentic RF squelch bursts. |
+| **MAYDAY & PAN-PAN Assistant** | Web Speech API (`speechSynthesis`) & Web Share | Official USCG / IMO radio distress script generator with phonetic GPS coordinates, audible voice broadcast into the VHF mic, and emergency SMS dispatch with live Google Maps link. |
 | **Acoustic Marine Signals** | Web Audio API | USCG / COLREGS sound signaling required for small craft: **Prolonged Fog Horn** (Rule 35), **Whistle**, **5 Short Blasts** (Danger/Doubt, Rule 34), and **Morse SOS**. |
 | **Anchor Drag Watch** | `navigator.geolocation` + `navigator.vibrate` | Sets an anchor swing perimeter (30m). Triggers audio horn and haptic pulses if the boat drifts out of the safe zone. |
 | **Screen Stay Awake** | Screen Wake Lock API (`navigator.wakeLock`) | Keeps the helm display awake while hands are busy paddling or handling the tiller. |
@@ -23,7 +25,7 @@ Recreated in 2026 using **100% Primitive Web Standard APIs** — zero external f
 
 ---
 
-## 🚀 Getting Started
+## ⚓Getting Started
 
 Since Seahelm is built purely with native Web Standard APIs, there are no build steps, compilers, or npm dependencies needed!
 
@@ -50,7 +52,7 @@ Open `http://localhost:8080` in your mobile or desktop browser.
 
 ---
 
-## 🧭 Navigation Views
+## ⚓ Navigation Views
 
 ### 1. Helm (Main Cockpit)
 - High-contrast digital speedometer in **Knots** with average and max trip speeds.
@@ -71,13 +73,17 @@ Open `http://localhost:8080` in your mobile or desktop browser.
 - Open-Meteo Marine API data: Wind speed, gusts, direction, wave height, swell period, visibility, and atmospheric pressure.
 - Automated Small Craft Advisory / Gale Warning alert indicators.
 
-### 4. Safety (Signals & Anchor Watch)
-- One-tap USCG & COLREGS compliant acoustic signals synthesized with Web Audio.
-- Anchor drag alarm with real-time drift calculation.
+### 4. Safety (VHF Radio, Distress, Signals & Anchor Watch)
+- **VHF Marine Radio Receiver**: Live streaming player for NOAA Weather Radio (WX1 & WX2) with authentic RF squelch bursts and channel frequency reference guide (Ch 16, 09, 13, 22A).
+- **MAYDAY & PAN-PAN Teleprompter**: Automatic generation of official USCG / IMO radio distress scripts populated with real-time phonetic GPS coordinates, vessel description, and nature of emergency.
+- **Audio Voice Broadcast**: Web Speech API (`speechSynthesis`) reads the distress message out loud into your VHF radio mic or phone loudspeaker at clear nautical pacing.
+- **Emergency SMS & Location Dispatch**: Pre-formats an emergency distress text containing live coordinates, vessel details, and an instant Google Maps pin link via Web Share / SMS.
+- **One-tap COLREGS Acoustic Signals**: Synthesized Prolonged Fog Horn, Whistle, 5 Short Danger Blasts, and Morse SOS.
+- **Anchor Drag Watch**: Real-time GPS perimeter surveillance with audio and haptic drift alarms.
 
 ---
 
-## 📄 License
+## ⚓ License
 
 MIT License — free for mariners, paddlers, and developers.
 

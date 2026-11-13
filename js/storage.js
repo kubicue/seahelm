@@ -19,7 +19,14 @@ export const Storage = {
       pressureUnit: 'inhg',  // 'inhg', 'hpa'
       nightVision: false,
       wakeLockEnabled: true,
-      anchorWatchRadius: 30  // meters
+      anchorWatchRadius: 30, // meters
+      vesselProfile: {
+        name: 'Seahelm Kayak 1',
+        craftType: 'Sea Kayak',
+        hullColor: 'Bright Yellow Deck, White Hull',
+        pob: 1,
+        pfd: 'Wearing Type III PFD Life Jackets'
+      }
     };
   },
 

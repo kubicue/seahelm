@@ -922,3 +922,287 @@ dialog.custom-dialog::backdrop {
   }
 }
 
+
+/* ==========================================================================
+   VHF Marine Radio & Distress Assistant Styles
+   ========================================================================== */
+
+/* VHF Radio Console Card */
+.vhf-console {
+  background: linear-gradient(145deg, #18152e, #100d22);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.6), 0 8px 24px rgba(0,0,0,0.4);
+}
+
+.vhf-lcd-screen {
+  background: #0f241a;
+  border: 3px solid #233e31;
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+  color: #34d399;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.8), 0 0 15px rgba(52, 211, 153, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+[data-theme="night-vision"] .vhf-lcd-screen {
+  background: #240a0a;
+  border-color: #4a1515;
+  color: #ef4444;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.8), 0 0 15px rgba(239, 68, 68, 0.2);
+}
+
+.vhf-channel-hero {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.vhf-ch-num {
+  font-size: 3.2rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.vhf-ch-freq {
+  font-size: 1.1rem;
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.vhf-status-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(52, 211, 153, 0.2);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+}
+
+.vhf-status-badge.receiving {
+  background: #34d399;
+  color: #052e16;
+  animation: pulse-glow 1.5s infinite;
+}
+
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+  70% { box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+}
+
+.vhf-channel-list {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  scrollbar-width: thin;
+}
+
+.vhf-ch-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.vhf-ch-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-highlight);
+  color: var(--text-primary);
+}
+
+.vhf-ch-btn.active {
+  background: #34d399;
+  color: #064e3b;
+  border-color: #34d399;
+}
+
+[data-theme="night-vision"] .vhf-ch-btn.active {
+  background: #ef4444;
+  color: #240a0a;
+  border-color: #ef4444;
+}
+
+.vhf-controls-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.vhf-vol-slider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.vhf-vol-slider input[type="range"] {
+  accent-color: var(--accent-cyan);
+}
+
+/* Distress Calling Cards */
+.distress-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.btn-distress {
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-distress.mayday {
+  background: linear-gradient(135deg, #e11d48, #9f1239);
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(225, 29, 72, 0.4);
+}
+
+.btn-distress.mayday:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(225, 29, 72, 0.6);
+}
+
+.btn-distress.panpan {
+  background: linear-gradient(135deg, #d97706, #92400e);
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(217, 119, 6, 0.35);
+}
+
+.btn-distress.panpan:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(217, 119, 6, 0.5);
+}
+
+.distress-icon-circle {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.distress-info h3 {
+  font-size: 1.3rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.distress-info p {
+  font-size: 0.8rem;
+  opacity: 0.9;
+  line-height: 1.3;
+}
+
+/* Header Beacon Button */
+.btn-emergency-beacon {
+  background: #e11d48;
+  color: #fff;
+  border: none;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  animation: beacon-blink 2s infinite ease-in-out;
+}
+
+@keyframes beacon-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(0.97); }
+}
+
+/* Emergency Teleprompter Dialog */
+dialog.emergency-teleprompter {
+  background: #0d0818;
+  color: #f8fafc;
+  border: 2px solid #e11d48;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  max-width: 620px;
+  width: 95%;
+  margin: auto;
+  box-shadow: 0 0 50px rgba(225, 29, 72, 0.4);
+}
+
+[data-theme="night-vision"] dialog.emergency-teleprompter {
+  background: #140202;
+  border-color: #ef4444;
+}
+
+.teleprompter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(225, 29, 72, 0.3);
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+}
+
+.teleprompter-script-box {
+  background: #191228;
+  border: 1px solid rgba(225, 29, 72, 0.35);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-height: 320px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  color: #ffccd5;
+  margin: 16px 0;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.script-highlight {
+  color: #fbbf24;
+  font-weight: 800;
+}
+
+.teleprompter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}

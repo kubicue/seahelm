@@ -1,5 +1,5 @@
 /* Seahelm Service Worker - Marine Offline Support */
-const CACHE_NAME = 'seahelm-v2-cache';
+const CACHE_NAME = 'seahelm-v3-cache';
 const STATIC_ASSETS = [
   './',
   './index.html',
@@ -10,6 +10,8 @@ const STATIC_ASSETS = [
   './js/chart.js',
   './js/weather.js',
   './js/safety.js',
+  './js/vhf.js',
+  './js/distress.js',
   './js/app.js',
   './manifest.json',
   './icons/icon.svg',
