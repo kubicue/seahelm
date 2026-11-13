@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#241c49">
+  <meta name="description" content="Seahelm — Essential marine navigation, tracking, weather, and safety tools for small craft and unmotorized boaters.">
+  
+  <title>Seahelm — Marine Navigator</title>
+
+  <!-- PWA Manifest & App Icons -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="apple-touch-icon" href="icons/icon-original.png">
+
+  <!-- Modern Vanilla CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top App Bar -->
+  <header class="app-header">
+    <div class="brand-group">
+      <img src="icons/icon.svg" alt="Seahelm" class="brand-icon">
+      <div>
+        <div class="brand-title">Seahelm</div>
+        <div class="brand-sub">Small Craft Navigator</div>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <div class="status-badge" title="GPS Status">
+        <span id="gps-status-dot" class="status-dot"></span>
+        <span id="gps-status-text">GPS Standby</span>
+      </div>
+
+      <!-- Night Vision Red Mode Toggle -->
+      <button id="btn-night-vision" class="btn-icon" title="Night Vision Red Mode" aria-label="Toggle Night Vision">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+          <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/>
+        </svg>
+      </button>
+
+      <!-- Screen Wake Lock Toggle -->
+      <button id="btn-wake-lock" class="btn-icon" title="Stay Awake (Wake Lock)" aria-label="Toggle Screen Stay Awake">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+        </svg>
+      </button>
+
+      <!-- Fullscreen Toggle -->
+      <button id="btn-fullscreen" class="btn-icon" title="Fullscreen Mode" aria-label="Toggle Fullscreen">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Viewports -->
+  <main class="app-main">
+
+    <!-- 1. TAB: HELM / MAIN -->
+    <section id="tab-helm" class="tab-content active">
+      <div class="telemetry-grid">
+        
+        <!-- Speed & Velocity Card -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Boat Speed (SOG)
+            </span>
+            <span class="card-badge">GPS</span>
+          </div>
+
+          <div class="metric-large">
+            <div id="helm-speed-val" class="metric-val">0.0</div>
+            <div class="metric-unit">KTS</div>
+          </div>
+
+          <div class="metric-sub">
+            <span>Avg: <strong id="helm-avg-speed">0.0</strong> kts</span>
+            <span>Max: <strong id="helm-max-speed">0.0</strong> kts</span>
+          </div>
+
+          <div class="metric-row">
+            <div class="sub-metric">
+              <span class="sub-label">Latitude</span>
+              <span id="helm-lat-val" class="sub-val">--° --.---' N</span>
+            </div>
+            <div class="sub-metric">
+              <span class="sub-label">Longitude</span>
+              <span id="helm-lon-val" class="sub-val">---° --.---' W</span>
+            </div>
+            <div class="sub-metric">
+              <span class="sub-label">Accuracy</span>
+              <span id="helm-acc-val" class="sub-val">±--m</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Compass & Inclinometer Card -->
+        <div class="card compass-card">
+          <div class="card-header">
+            <span class="card-title">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+              Heading (COG / Magnetic)
+            </span>
+            <span id="helm-heading-cardinal" class="card-badge">N</span>
+          </div>
+
+          <!-- Live Compass Rose -->
+          <div class="compass-container">
+            <div id="compass-dial" class="compass-dial">
+              <span class="cardinal-label cardinal-n">N</span>
+              <span class="cardinal-label cardinal-e">E</span>
+              <span class="cardinal-label cardinal-s">S</span>
+              <span class="cardinal-label cardinal-w">W</span>
+              <div class="compass-pointer"></div>
+              <div class="compass-pointer-s"></div>
+            </div>
+            <div class="compass-center"></div>
+          </div>
+
+          <div class="metric-large" style="justify-content: center;">
+            <div id="helm-heading-val" class="metric-val">000</div>
+            <div class="metric-unit">°DEG</div>
+          </div>
+
+          <!-- Pitch and Roll (Heel Angle) -->
+          <div class="inclinometer-box">
+            <div class="tilt-meter">
+              <span class="sub-label">Heel (Roll)</span>
+              <div class="tilt-bar-track">
+                <div id="roll-indicator" class="tilt-bar-indicator"></div>
+              </div>
+              <span id="roll-val" class="sub-val">0° Even</span>
+            </div>
+
+            <div class="tilt-meter">
+              <span class="sub-label">Trim (Pitch)</span>
+              <span id="pitch-val" class="sub-val">0°</span>
+            </div>
+          </div>
+
+          <button id="btn-compass-permission" class="btn-secondary" style="display:none; width: 100%; margin-top: 10px;">
+            Enable Device Compass
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Quick Marine Weather Snapshot -->
+      <div class="card" style="margin-bottom: 16px;">
+        <div class="card-header">
+          <span class="card-title">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+            Marine Conditions Snapshot
+          </span>
+          <span class="card-badge" style="cursor: pointer;" onclick="app.switchTab('weather')">Full Marine Forecast &rarr;</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <div id="quick-weather-temp" style="font-size: 1.3rem; font-weight: 800; color: var(--text-primary);">--°F, Loading...</div>
+            <div id="quick-weather-wind" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">Wind: -- kts | Waves: -- ft</div>
+          </div>
+          <div id="weather-advisory-badge" class="marine-advisory-badge calm">Checking Conditions</div>
+        </div>
+      </div>
+
+      <!-- Trip Computer Controls -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Trip Log &amp; Track Recording</span>
+          <span id="helm-trip-time" class="card-badge">0m 00s</span>
+        </div>
+
+        <div class="metric-row" style="margin-top: 0; padding-top: 0; border: none;">
+          <div class="sub-metric">
+            <span class="sub-label">Distance Logged</span>
+            <span id="helm-trip-dist" class="sub-val">0.00 NM</span>
+          </div>
+          <div class="sub-metric">
+            <span class="sub-label">Recording Status</span>
+            <span id="helm-rec-status" class="sub-val">Standby</span>
+          </div>
+        </div>
+
+        <div class="trip-controls">
+          <button id="btn-start-trip" class="btn-primary" style="flex: 1;">Start Trip</button>
+          <button id="btn-export-gpx" class="btn-secondary" title="Export GPX Track">Export GPX</button>
+          <button id="btn-simulate-gps" class="btn-secondary" title="Simulate Boating Trip">Demo Trip</button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 2. TAB: TRACK / CHART -->
+    <section id="tab-chart" class="tab-content">
+      <div class="chart-container">
+        <canvas id="chart-canvas"></canvas>
+
+        <!-- Chart HUD Overlay -->
+        <div class="chart-info-overlay">
+          <div><strong id="chart-overlay-coords">32.7150°, -117.1625°</strong></div>
+          <div id="chart-overlay-speed">0.0 kts | 000°</div>
+        </div>
+
+        <!-- Top Action Buttons -->
+        <div class="chart-top-actions">
+          <button id="btn-add-waypoint" class="btn-primary" style="padding: 8px 14px; font-size: 0.85rem;">
+            + Drop Mark
+          </button>
+        </div>
+
+        <!-- Chart Controls -->
+        <div class="chart-controls">
+          <button id="btn-chart-center" class="btn-icon" title="Center Vessel">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+          <button id="btn-zoom-in" class="btn-icon" title="Zoom In">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+          <button id="btn-zoom-out" class="btn-icon" title="Zoom Out">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Waypoints List Section -->
+      <div class="card" style="margin-top: 16px;">
+        <div class="card-header">
+          <span class="card-title">Saved Marks &amp; Waypoints</span>
+          <span class="card-badge">Bearing &amp; Range</span>
+        </div>
+        <div id="waypoints-list-container" class="waypoint-list">
+          <!-- Waypoints rendered by JS -->
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 3. TAB: WEATHER / MARINE -->
+    <section id="tab-weather" class="tab-content">
+      <!-- Port / Location Selector Chips -->
+      <div class="city-picker-bar">
+        <button class="city-chip" data-city="current location">📍 Current GPS Location</button>
+        <button class="city-chip active" data-city="san diego">San Diego Bay</button>
+        <button class="city-chip" data-city="los angeles">Marina del Rey / LA</button>
+        <button class="city-chip" data-city="san francisco">San Francisco Bay</button>
+        <button class="city-chip" data-city="miami">Biscayne Bay / Miami</button>
+        <button class="city-chip" data-city="new york">New York Harbor</button>
+        <button class="city-chip" data-city="chicago">Lake Michigan / Chicago</button>
+      </div>
+
+      <!-- Current Conditions Hero -->
+      <div class="weather-banner">
+        <div class="weather-primary">
+          <div>
+            <div id="weather-location-name" style="font-size: 0.9rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">San Diego Bay</div>
+            <div id="weather-temp-hero" class="weather-temp-hero">--°F</div>
+            <div id="weather-desc-hero" class="weather-desc-hero">Fetching Marine Weather...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Marine Parameters Grid -->
+      <div class="telemetry-grid">
+        <!-- Wind Card -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Wind &amp; Gusts</span>
+            <span class="card-badge">Surface 10m</span>
+          </div>
+          <div class="metric-large">
+            <div id="weather-wind-speed" class="metric-val" style="font-size: 2.8rem;">--</div>
+            <div class="metric-unit">KTS</div>
+          </div>
+          <div class="sub-metric">
+            <span class="sub-label">Wind Direction</span>
+            <span id="weather-wind-dir" class="sub-val">--</span>
+          </div>
+        </div>
+
+        <!-- Waves & Swell Card -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Seas &amp; Swell</span>
+            <span class="card-badge">Marine Model</span>
+          </div>
+          <div class="metric-large">
+            <div id="weather-wave-height" class="metric-val" style="font-size: 2.8rem;">--</div>
+            <div class="metric-unit">FT</div>
+          </div>
+          <div class="sub-metric">
+            <span class="sub-label">Wave Period</span>
+            <span id="weather-wave-period" class="sub-val">-- sec</span>
+          </div>
+        </div>
+
+        <!-- Visibility Card -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Marine Visibility</span>
+            <span class="card-badge">Atmosphere</span>
+          </div>
+          <div class="metric-large">
+            <div id="weather-visibility" class="metric-val" style="font-size: 2.8rem;">--</div>
+            <div class="metric-unit">NM</div>
+          </div>
+          <div class="sub-metric">
+            <span class="sub-label">Fog / Horizon</span>
+            <span class="sub-val">Good Visibility</span>
+          </div>
+        </div>
+
+        <!-- Barometer Card -->
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Barometric Pressure</span>
+            <span class="card-badge">Barometer</span>
+          </div>
+          <div class="metric-large">
+            <div id="weather-pressure" class="metric-val" style="font-size: 2.2rem;">--</div>
+          </div>
+          <div class="sub-metric">
+            <span class="sub-label">Trend (3h)</span>
+            <span class="sub-val">Steady Atmospheric Gradient</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 4. TAB: SAFETY & SOUND SIGNALS -->
+    <section id="tab-safety" class="tab-content">
+      <div class="card" style="margin-bottom: 16px;">
+        <div class="card-header">
+          <span class="card-title">Marine Distress &amp; Sound Signals</span>
+          <span class="card-badge">COLREGS Audio</span>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">
+          Unmotorized craft and small boats are legally required to carry a sound-producing signaling device. These Web Audio synthesizers generate official marine audio signals.
+        </p>
+
+        <div class="safety-grid">
+          <!-- Prolonged Fog Horn Blast -->
+          <button id="btn-fog-horn" class="signal-btn">
+            <div class="signal-icon-box">
+              <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+            </div>
+            <div class="signal-info">
+              <h4>Prolonged Fog Horn</h4>
+              <p>COLREGS Rule 35: 4-6 second deep horn blast in reduced visibility.</p>
+            </div>
+          </button>
+
+          <!-- Whistle Blast -->
+          <button id="btn-whistle" class="signal-btn">
+            <div class="signal-icon-box">
+              <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+            </div>
+            <div class="signal-info">
+              <h4>Pealess Marine Whistle</h4>
+              <p>High-pitch shrill acoustic blast for kayaks and paddleboards.</p>
+            </div>
+          </button>
+
+          <!-- 5 Short Danger Blasts -->
+          <button id="btn-five-blasts" class="signal-btn danger">
+            <div class="signal-icon-box">
+              <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="signal-info">
+              <h4>5 Short Danger Blasts</h4>
+              <p>COLREGS Rule 34: "I do not understand your intentions / Danger imminent!"</p>
+            </div>
+          </button>
+
+          <!-- Morse Code SOS -->
+          <button id="btn-sos" class="signal-btn danger">
+            <div class="signal-icon-box">
+              <svg viewBox="0 0 24 24" width="28" height="28" stroke="currentColor" stroke-width="2" fill="none"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            </div>
+            <div class="signal-info">
+              <h4>Morse Code S-O-S</h4>
+              <p>International audio distress sequence (... --- ...)</p>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Anchor Drag Watch -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Anchor Drift Watch</span>
+          <span id="anchor-status-text" class="card-badge">Watch Inactive</span>
+        </div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 12px;">
+          Set your anchor drop position. If wind or tide pulls your vessel beyond the 30-meter swing radius, Seahelm triggers an alarm and haptic alert.
+        </p>
+        <div style="display: flex; gap: 12px;">
+          <button id="btn-set-anchor" class="btn-primary" style="flex: 1;">Drop Anchor (Set Watch)</button>
+          <button id="btn-clear-anchor" class="btn-danger" style="display: none; flex: 1;">Weigh Anchor (Stop)</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Navigation Tab Bar (Matches 2015 Navigation) -->
+  <nav class="bottom-nav">
+    <ul class="nav-tabs">
+      <li>
+        <button class="nav-tab-btn active" data-tab="helm">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+          <span>Helm</span>
+        </button>
+      </li>
+      <li>
+        <button class="nav-tab-btn" data-tab="chart">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+          <span>Track</span>
+        </button>
+      </li>
+      <li>
+        <button class="nav-tab-btn" data-tab="weather">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+          <span>Weather</span>
+        </button>
+      </li>
+      <li>
+        <button class="nav-tab-btn" data-tab="safety">
+          <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Safety</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Add Waypoint Modal Dialog -->
+  <dialog id="waypoint-dialog" class="custom-dialog">
+    <form id="waypoint-form" method="dialog">
+      <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 8px;">Drop Mark / Waypoint</h3>
+      <p style="font-size: 0.8rem; color: var(--text-muted);">
+        Save your current GPS position as a navigation target.
+      </p>
+
+      <div class="form-group">
+        <label for="waypoint-name-input">Waypoint Name</label>
+        <input type="text" id="waypoint-name-input" class="form-input" placeholder="e.g. Harbor Entrance, Fishing Spot" required>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+        <button type="button" id="btn-cancel-waypoint" class="btn-secondary">Cancel</button>
+        <button type="submit" class="btn-primary">Save Mark</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Vanilla App Entry Point -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "name": "Seahelm — Marine Navigator",
+  "short_name": "Seahelm",
+  "description": "Essential marine navigation, compass, tracking, weather, and safety tools for small craft and unmotorized boaters.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#15122b",
+  "theme_color": "#2c2250",
+  "categories": ["navigation", "weather", "utilities", "sports"],
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-original.png",
+      "sizes": "214x214",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
